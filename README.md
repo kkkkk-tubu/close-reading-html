@@ -20,7 +20,16 @@
 
 ## 安装
 
-见 [INSTALL.md](INSTALL.md)。核心就一句：把目录放进 harness 的 skills 目录，或从 OpenViking 装（`viking://agent/skills/close-reading-html`）。
+```bash
+# 方式一：克隆到 harness 的 skills 目录（DSH 为例）
+git clone https://github.com/kkkkk-tubu/close-reading-html ~/.dsh/skills/close-reading-html
+
+# 方式二：OpenViking（跨机器跨 harness）
+ov skills add https://github.com/kkkkk-tubu/close-reading-html
+# 或已共享时直接引用：viking://agent/skills/close-reading-html
+```
+
+其它 harness 的 skills 目录见 [INSTALL.md](INSTALL.md)（Claude Code / Codex / Cursor / pi / OpenCode）。
 
 ## 用法
 
