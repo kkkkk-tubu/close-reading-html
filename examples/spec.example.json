@@ -1,0 +1,60 @@
+{
+  "_comment": "最小可用 spec 样例。正文里用 {key|显示词} 标注术语，key 必须在 terms 里登记。",
+  "title": "示例精读 · 原文/译文/注解",
+  "subtitle": "某作者 2024 — 点任意高亮术语即可看注释",
+  "doc_title": "Example Paper — 三段对照精读",
+  "doc_sub": "示范用：两个句群卡片 + 三个术语",
+  "source": {
+    "citation": "Someone et al. Example Paper Title. Venue 2024, pp. 1-10. arXiv:0000.00000。",
+    "method": "ar5iv HTML 抓取正文，公式以 LaTeX 原样保留。",
+    "coverage": "Abstract、§1。<b>待续</b>：§2 之后。"
+  },
+  "reading_order": "Abstract → §1 → 术语表。",
+  "footnote": "本批结束。待续：§2 方法、§3 实验。",
+  "prereq": [
+    "<b>数学</b><ol><li>对数性质：$-\\log 0.5\\approx0.69$</li><li>链式法则</li></ol>",
+    "<b>机器学习</b><ol start=\"3\"><li>二分类与 sigmoid</li></ol>"
+  ],
+  "terms": {
+    "class-imbalance": {
+      "en": "class imbalance",
+      "zh": "类别不平衡",
+      "df": "一类样本远多于另一类。本文达 1:1000。"
+    },
+    "cross-entropy": {
+      "en": "cross entropy loss (CE)",
+      "zh": "交叉熵损失",
+      "df": "分类最基础的损失：$-\\log$(模型对真实类别给出的概率)。"
+    },
+    "modulating": {
+      "en": "modulating factor",
+      "zh": "调制因子",
+      "df": "$(1-p_t)^\\gamma$，乘在交叉熵前面的动态系数。"
+    }
+  },
+  "sections": [
+    {
+      "id": "abs",
+      "heading": "Abstract（摘要）",
+      "label": "Abstract",
+      "cards": [
+        {
+          "en": "We discover that the extreme class imbalance encountered during training is the central cause.",
+          "zh": "我们发现训练过程中遭遇的极端{class-imbalance|类别不平衡}是根本原因。",
+          "note": [
+            "这是全文的<b>立论句</b>：一句话概括因果链。",
+            "<b>注意宾语</b>：作者改的是<i>损失函数</i>，不是网络结构，也不是数据。"
+          ]
+        },
+        {
+          "en": "We reshape the standard cross entropy loss so that it down-weights well-classified examples.",
+          "zh": "我们重塑标准{cross-entropy|交叉熵损失}，使已被分好的样本损失被降权。",
+          "note": [
+            "降权按<i>样本当前分得好不好</i>动态决定，而不是按类别固定——这是与按类别加权的本质区别。"
+          ],
+          "linkbox": "你自己的数据正负比是 {class-imbalance|不平衡} 的典型量级，触发该方法的{modulating|调制}前提成立与否，取决于这个比值本身。"
+        }
+      ]
+    }
+  ]
+}

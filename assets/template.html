@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}}</title>
+<style>
+:root[data-theme="dark"]{
+  --bg:#14161a; --panel:#1a1d23; --panel2:#212630; --head:#171a20;
+  --text:#e6e8ec; --muted:#98a2b3; --border:#2c323d;
+  --en:#a8cdf0; --zh:#e6e8ec; --note:#b9c2d0;
+  --accent:#7aa2f7; --accent2:#e0af68; --term:#9ece6a; --termbg:rgba(158,206,106,.13);
+  --tag:#bb9af7; --warn:#f7768e;
+}
+:root[data-theme="light"]{
+  --bg:#f5f6f8; --panel:#ffffff; --panel2:#f0f2f5; --head:#eceff3;
+  --text:#1f2430; --muted:#5b6472; --border:#d8dde5;
+  --en:#1a4f8a; --zh:#1f2430; --note:#39414f;
+  --accent:#2f6fed; --accent2:#a75d00; --term:#3d7a1f; --termbg:rgba(61,122,31,.10);
+  --tag:#7c3aed; --warn:#c0392b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,"Segoe UI","Microsoft YaHei",system-ui,sans-serif;
+  line-height:1.75;font-size:15px}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px 120px}
+
+/* 顶栏 */
+.topbar{position:sticky;top:0;z-index:50;background:var(--head);
+  border-bottom:1px solid var(--border);backdrop-filter:blur(8px)}
+.topbar .inner{max-width:980px;margin:0 auto;padding:10px 18px;
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.title{font-weight:700;font-size:15px;margin-right:auto}
+.title small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+button.btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);
+  border-radius:7px;padding:5px 11px;font-size:13px;cursor:pointer}
+button.btn:hover{border-color:var(--accent);color:var(--accent)}
+button.btn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* 章节 */
+h1.doc{font-size:24px;margin:28px 0 6px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+h2.sec{font-size:20px;margin:38px 0 14px;padding:8px 12px;background:var(--panel2);
+  border-left:4px solid var(--accent);border-radius:0 6px 6px 0}
+h3.sub2{font-size:16px;color:var(--accent2);margin:24px 0 10px}
+
+/* 句群卡片 */
+.grp{background:var(--panel);border:1px solid var(--border);border-radius:10px;
+  margin:14px 0;overflow:hidden}
+.grp .en{padding:14px 16px;background:var(--panel2);color:var(--en);
+  border-bottom:1px solid var(--border);font-family:"Georgia","Times New Roman",serif;
+  font-size:15.5px;line-height:1.72}
+.grp .zh{padding:14px 16px;color:var(--zh);border-bottom:1px dashed var(--border)}
+.grp .note{padding:12px 16px 14px;color:var(--note);font-size:14px}
+.grp .note ol,.grp .note ul{margin:6px 0 6px 4px;padding-left:20px}
+.grp .note li{margin:5px 0}
+.lab{display:inline-block;font-size:11px;color:var(--muted);border:1px solid var(--border);
+  border-radius:4px;padding:0 6px;margin-right:8px;vertical-align:2px}
+.linkbox{background:rgba(122,162,247,.10);border:1px solid var(--accent);border-radius:7px;
+  padding:9px 11px;margin:10px 0 0;font-size:13.5px}
+.linkbox b{color:var(--accent)}
+.hidezh .grp .zh{display:none}
+
+/* 术语 */
+.term{color:var(--term);background:var(--termbg);border-bottom:1px dashed var(--term);
+  border-radius:3px;padding:0 3px;cursor:pointer;transition:.12s}
+.term:hover{background:var(--term);color:var(--panel)}
+.term.pin{background:var(--term);color:var(--panel)}
+#card{position:fixed;z-index:200;max-width:330px;background:var(--panel);
+  border:1px solid var(--accent);border-radius:9px;padding:11px 13px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);font-size:13.5px;display:none}
+#card .en{color:var(--accent);font-weight:700}
+#card .zh{color:var(--text);font-weight:600;margin:3px 0 5px}
+#card .df{color:var(--note);line-height:1.65}
+#card .ext{margin-top:7px;padding-top:7px;border-top:1px dashed var(--border);
+  color:var(--muted);font-size:12.5px}
+#card .close{float:right;cursor:pointer;color:var(--muted);font-size:15px;line-height:1}
+
+/* 术语表 */
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:var(--panel)}
+th,td{border:1px solid var(--border);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:600}
+td .t-en{color:var(--en)}
+.searchbox{margin:12px 0}
+.searchbox input{width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);
+  background:var(--panel);color:var(--text);font-size:14px}
+.toc{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin:16px 0}
+.toc a{color:var(--accent);text-decoration:none;margin-right:14px;font-size:13.5px;white-space:nowrap}
+.toc a:hover{text-decoration:underline}
+.footnote{color:var(--muted);font-size:13px;margin-top:8px}
+.srcbox{background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--accent2);
+  border-radius:0 8px 8px 0;padding:12px 15px;margin:16px 0;font-size:13.5px;color:var(--note)}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <div class="title">{{TITLE}}
+    <small>{{SUBTITLE}}</small></div>
+  <button class="btn" id="btnZh">遮住译文</button>
+  <button class="btn" id="btnTheme">浅色</button>
+</div></div>
+
+<div class="wrap">
+
+<h1 class="doc">{{DOC_TITLE}}</h1>
+<div class="sub">{{DOC_SUB}}</div>
+
+<div class="srcbox">
+<b>原文来源</b>：{{SOURCE_CITATION}}<br>
+<b>取文方式</b>：{{SOURCE_METHOD}}<br>
+<b>本批覆盖</b>：{{COVERAGE}}<br>
+<b>用法</b>：点带虚线的术语看注释；点「遮住译文」可先读原文自测；「浅色/深色」切换主题。
+</div>
+
+<div class="toc">
+<b>目录</b><br>
+{{TOC_LINKS}}
+</div>
+
+<!-- ============ 正文：每个 .grp 是一个句群卡片 ============ -->
+{{BODY}}
+
+<!-- ============ 术语表 ============ -->
+<h2 class="sec" id="glossary">术语表（点击术语可跳转 / 文中任意高亮词也可点）</h2>
+<div class="searchbox"><input id="q" placeholder="搜索术语（中英文均可）…"></div>
+<table id="gl"><thead><tr><th style="width:26%">English</th><th style="width:20%">中文</th><th>一句话释义</th></tr></thead>
+<tbody>
+{{GLOSSARY_ROWS}}
+</tbody></table>
+
+<!-- ============ 前置知识 ============ -->
+<h2 class="sec" id="pre">前置知识清单（读懂全文所需）</h2>
+<div class="grp">
+<div class="en" style="color:var(--accent2)">Prerequisites</div>
+<div class="zh">按「只具备入门基础」的标准列出，打勾即可开读。</div>
+<div class="note">
+<ul>
+{{PREREQ_ITEMS}}
+</ul>
+<div class="linkbox"><b>建议阅读顺序</b>：{{READING_ORDER}}</div>
+</div>
+</div>
+
+<div class="footnote">{{FOOTNOTE}}</div>
+
+</div><!-- /wrap -->
+
+<div id="card"><span class="close" id="cardClose">×</span><div id="cardBody"></div></div>
+
+
+<!-- 坑：MathJax 必须先配置后加载。反过来则 $...$ 内联公式不渲染。 -->
+<script>
+window.MathJax = {tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<script>
+/* ========== 术语词典 ==========
+   key 必须与正文 span.term 的 data-t 完全一致；漏一个术语点开就是空白。 */
+const TERMS = {{TERMS_JSON}};
+
+/* ========== 交互 ========== */
+const card=document.getElementById('card'), body=document.getElementById('cardBody');
+let cur=null;
+function place(el){
+  const r=el.getBoundingClientRect();
+  card.style.left='0px'; card.style.top='0px'; card.style.display='block';
+  const w=card.offsetWidth,h=card.offsetHeight;
+  let left=Math.max(8,Math.min(r.left,window.innerWidth-w-8));
+  let top=r.bottom+8;
+  if(top+h>window.innerHeight-8) top=Math.max(8,r.top-h-8);
+  card.style.left=left+'px'; card.style.top=top+'px';
+}
+function show(el){
+  const t=TERMS[el.dataset.t];
+  let html='';
+  if(t){
+    html='<div class="en">'+t.en+'</div><div class="zh">'+t.zh+'</div><div class="df">'+t.df+'</div>';
+  }else{
+    html='<div class="en">'+el.textContent+'</div><div class="df">该术语尚未收录，可到文末术语表检索相近条目。</div>';
+  }
+  body.innerHTML=html;
+  if(cur) cur.classList.remove('pin');
+  el.classList.add('pin'); cur=el;
+  place(el);
+}
+function hide(){ card.style.display='none'; if(cur){cur.classList.remove('pin');cur=null;} }
+document.addEventListener('click',function(e){
+  const el=e.target.closest('.term');
+  if(el){
+    if(cur===el){hide();}else{show(el);}
+    return;
+  }
+  if(!e.target.closest('#card')) hide();
+});
+document.getElementById('cardClose').onclick=hide;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')hide();});
+
+/* 遮住译文（自测用） */
+const btnZh=document.getElementById('btnZh');
+btnZh.onclick=function(){
+  document.body.classList.toggle('hidezh');
+  const on=document.body.classList.contains('hidezh');
+  this.classList.toggle('on',on);
+  this.textContent=on?'显示译文':'遮住译文';
+};
+/* 主题切换 */
+const btnT=document.getElementById('btnTheme');
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  btnT.textContent = t==='dark' ? '浅色':'深色';
+  try{localStorage.setItem('theme',t);}catch(err){}
+}
+try{const s=localStorage.getItem('theme'); if(s) setTheme(s);}catch(err){}
+btnT.onclick=function(){ setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'); };
+
+/* 术语表搜索 */
+document.getElementById('q').addEventListener('input',function(){
+  const k=this.value.trim().toLowerCase();
+  document.querySelectorAll('#gl tbody tr').forEach(tr=>{
+    tr.style.display = (!k || tr.textContent.toLowerCase().indexOf(k)>=0) ? '' : 'none';
+  });
+});
+</script>
+</body>
+</html>
